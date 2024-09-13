@@ -8,10 +8,10 @@ import { UserCreateDialog } from "./user-create-dialog";
 import { useEffect, useState } from "react";
 
 const Users = () => {
-  const [createModalOpen, setCreateModalOpen] = useState(false);
-
+ 
   const [data, setData] = useState([]);
-
+ const [createModalOpen, setCreateModalOpen] = useState(false);
+ const [limit, setLimit] = useState(10)
   useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
@@ -32,11 +32,18 @@ const Users = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <UsersTable data={data} />
-          <div className="flex justify-center p-8">
-            <Button variant="outline">Load more...</Button>
-          </div>
+          <UsersTable data={data} limit={limit} />
         </CardContent>
+        <div className="flex justify-center p-8">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setLimit(limit + 10);
+            }}
+          >
+            Load more...
+          </Button>
+        </div>
       </Card>
 
       <UserCreateDialog open={createModalOpen} onClose={setCreateModalOpen} />
