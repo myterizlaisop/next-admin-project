@@ -15,14 +15,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MoreHorizontal, Settings } from "lucide-react";
+import {useState} from 'react'
 
 export function UsersTable(props) {
 
   const { data, limit } = props;
+  const [search, setSearch] = useState('')
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Input placeholder="Нэрээр хайх..." className="max-w-sm" />
+        <Input onChange={(e) => setSearch(e.target.value)} placeholder="Нэрээр хайх..." className="max-w-sm" />
       </div>
       <div className="border rounded-md">
         <Table>
@@ -39,7 +41,10 @@ export function UsersTable(props) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.slice(0, limit).map((item, index) => (
+            {data.filter((item) => {
+              return search.toLowerCase() === '' ? item : item.lastname, item.firstname, item.email.toLowerCase().includes(search)
+              
+            })?.slice(0, limit).map((item, index) => (
               <TableRow key={item.id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableHead>
@@ -70,9 +75,9 @@ export function UsersTable(props) {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem    onClick={() =>
-                          navigator.clipboard.writeText("temkanibno@gmail.com")
+                          navigator.clipboard.writeText(item.email)
                         }>Edit</DropdownMenuItem>
-                      <DropdownMenuItem>Delete</DropdownMenuItem>
+                      <DropdownMenuItem onClick={()=>item.findBy}>Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableHead>
