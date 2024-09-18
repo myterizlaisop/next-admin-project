@@ -9,11 +9,9 @@ import { useEffect, useState } from "react";
 import { Edit } from "lucide-react";
 
 const Users = () => {
- 
   const [data, setData] = useState([]);
- const [createModalOpen, setCreateModalOpen] = useState(false);
- const [limit, setLimit] = useState(10)
- const [none, ]
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [limit, setLimit] = useState(10);
 
   useEffect(() => {
     fetch("/api/users")
@@ -37,25 +35,20 @@ const Users = () => {
         <CardContent>
           <UsersTable data={data} limit={limit} />
         </CardContent>
-        <div className="flex justify-center p-8">
-          <Button
-            variant="outline"
-            onClick={() => {
-             if(limit<51){
-                 setLimit(limit + 10)
-             }else if {
-                
-             }
-            }}
-          >
-            Load more...
-          </Button>
-        </div>
+        {limit <= data.length && (
+          <div className="flex justify-center p-8">
+            <Button variant="outline" onClick={() => 
+              setLimit(limit + 10)
+            }>
+              Load more...
+            </Button>
+          </div>
+        )}
       </Card>
 
       <UserCreateDialog open={createModalOpen} onClose={setCreateModalOpen} />
 
-      <Edit open={createModalOpen} onClose={Edit} />
+
     </div>
   );
 };
