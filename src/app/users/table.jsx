@@ -18,9 +18,8 @@ import { MoreHorizontal, Settings } from "lucide-react";
 import {useState} from 'react'
 
 export function UsersTable(props) {
-  const { data, limit } = props;
+  const { data, limit, onDelete } = props;
   const [search, setSearch] = useState('');
-  const [remove, setRemove] = useState('')
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -75,11 +74,11 @@ export function UsersTable(props) {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem    onClick={() =>
-                          navigator.clipboard.writeText(item.email)
+                          setCreate                         
                         }>Edit</DropdownMenuItem>
                       <DropdownMenuItem onClick={()=> {
-                        // console.log("Delete button clicked", item.id,)
-                            setRemove(remove)
+                        onDelete(item.id);
+                         
                       }
                         
                         }>Delete</DropdownMenuItem>

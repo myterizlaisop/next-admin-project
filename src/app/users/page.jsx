@@ -21,6 +21,29 @@ const Users = () => {
       });
   }, []);
 
+  const handleonDelete = (id) => {
+if(confirm("ustgalashu")){
+      fetch("api/users/" + id, {
+      method: "DELETE",
+    })
+    .then((res) => res.json())
+    .then(()=> {
+      setData([...data].filter((item)=>item.id !== id));
+    })
+}
+  };
+  const handleonCreate = (values) => {
+    fetch("api/users", {
+      method: "POST",
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then((newData) => {
+  setData([...data, newData.data]);
+  setCreateModalOpen(false)
+      });
+  }
+
   return (
     <div>
       <Card>
@@ -33,22 +56,22 @@ const Users = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <UsersTable data={data} limit={limit} />
+          <UsersTable onDelete={handleonDelete} data={data} limit={limit} />
         </CardContent>
         {limit <= data.length && (
           <div className="flex justify-center p-8">
-            <Button variant="outline" onClick={() => 
-              setLimit(limit + 10)
-            }>
+            <Button variant="outline" onClick={() => setLimit(limit + 10)}>
               Load more...
             </Button>
           </div>
         )}
       </Card>
 
-      <UserCreateDialog open={createModalOpen} onClose={setCreateModalOpen} />
-
-
+      <UserCreateDialog
+        onCreate={handleonCreate}
+        open={createModalOpen}
+        onClose={setCreateModalOpen}
+      />
     </div>
   );
 };
